@@ -439,7 +439,7 @@ try_emtee_update_if_enabled() {
         show "Attempting to update @world set (for new versions, or changed use flags)"
         show "using emtee..."
         rm -f "${FALLBACK_SENTINEL}"
-        if ${PUMP} emtee ${ASKFLAG} ${ALERTFLAG} ${VERBOSITYFLAG} --emerge-args="${EMERGEARGS} ${EMERGE_USEPKG}" --full-build-fallback-threshold=75; then
+        if ${PUMP} emtee ${ASKFLAG} ${ALERTFLAG} --emerge-args="${EMERGEARGS} ${EMERGE_USEPKG}" --full-build-fallback-threshold=75; then
             show "emtee run completed successfully!"
         else
             warning "emtee @world build did not complete successfully!"
@@ -620,7 +620,7 @@ check_if_dispatch_conf_needs_to_be_run() {
     # check if the user has any configuration file changes pending review
     # by dispatch-conf, and set the NEEDSDISPATCHCONF variable accordingly
     # we do a rough check to see if there are any pending changes
-    local DIRS_TO_CHECK="$(emerge --info | grep '^CONFIG_PROTECT=' | cut -d"\"" -f2)"
+    local DIRS_TO_CHECK="/etc"
     local PENDING_CHANGES="$(find ${DIRS_TO_CHECK} -name '*._cfg*' -type f -print)"
     if [ -n "${PENDING_CHANGES}" ]; then
         NEEDSDISPATCHCONF=1
@@ -686,7 +686,7 @@ offer_kernel_upgrade_to_staging_if_available() {
             show "Entering buildkernel..."
             # following does not require your USB key to be inserted, as it
             # only builds to staging in /boot...
-            ${BUILDKERNEL} ${ASKFLAG} ${ALERTFLAG} ${VERBOSITYFLAG} ${BUILDKERNELARGS} --stage-only
+            ${BUILDKERNEL} ${ASKFLAG} ${ALERTFLAG} ${BUILDKERNELARGS} --stage-only
             KERNELBUILT=1
         elif [[ "${USE_GENKERNEL}" = true ]]; then
             build_genkernel
@@ -765,7 +765,7 @@ copy_new_kernel_from_staging_if_present_and_desired() {
         fi
         if [[ $DO_KERNELDEPLOY==1 ]]; then
             show "Copying new kernel from staging..."
-            buildkernel ${ASKFLAG} ${ALERTFLAG} ${VERBOSITYFLAG} --copy-from-staging
+            buildkernel ${ASKFLAG} ${ALERTFLAG} --copy-from-staging
             KERNELDEPLOYED=1
         fi
     fi
