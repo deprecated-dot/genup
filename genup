@@ -254,7 +254,7 @@ update_toolchain () {
 
     show "Checking if toolchain packages need updating"
     local pkg
-    local packages="sys-devel/gcc sys-libs/glibc sys-devel/binutils dev-util/cmake"
+    local packages="sys-devel/gcc sys-libs/glibc sys-devel/binutils dev-build/cmake"
     for pkg in $packages; do
         if emerge --pretend --update ${pkg} | grep -e "^\[ebuild.*U.*\] ${pkg}" > /dev/null 2>&1; then
             show "Updating ${pkg}"
@@ -907,7 +907,7 @@ display_final_status() {
         show "There are unused webapp installs"
         show "${webapp}"
         body+="webapp-config --list-unused-install\n${webapp}\n\n"
-        body+="--depclean was skipped to avoid breaking exisitng webapp installs\n\n"
+        body+="--depclean was skipped to avoid breaking existing webapp installs\n\n"
     fi
 
     show
